@@ -1,28 +1,37 @@
 import { useState } from 'react'
 import type { InventoryItem } from '../types/InventoryItem'
 
-function AddItemForm() {
-  const [name, setName] = useState('')
-  const [category, setCategory] = useState('')
-  const [quantity, setQuantity] = useState(1)
-  const [expirationDate, setExpirationDate] = useState('')
+interface AddItemFormProps {
+    onAddItem: (item: InventoryItem) => void
+}
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+function AddItemForm({ onAddItem }: AddItemFormProps) {
 
-    const newItem: InventoryItem = {
-      id: crypto.randomUUID(),
-      name,
-      category,
-      quantity,
-      expirationDate,
+    const [name, setName] = useState('')
+    const [category, setCategory] = useState('')
+    const [quantity, setQuantity] = useState(1)
+    const [expirationDate, setExpirationDate] = useState('')
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+
+        const newItem: InventoryItem = {
+            id: crypto.randomUUID(),
+            name,
+            category,
+            quantity,
+            expirationDate,
+        }
+
+        onAddItem(newItem)
+        setName('')
+        setCategory('')
+        setQuantity(1)
+        setExpirationDate('')
     }
 
-    console.log(newItem)
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
+    return (
+        <form onSubmit={handleSubmit}>
             <h2>Add New Item</h2>
 
             <label>

@@ -1,7 +1,16 @@
+import { useState } from 'react'
 import './App.css'
 import AddItemForm from './components/AddItemForm'
+import type { InventoryItem } from './types/InventoryItem'
+import InventoryList from './components/InventoryList'
 
 function App() {
+
+  const [items, setItems] = useState<InventoryItem[]>([])
+  const handleAddItem = (newItem: InventoryItem) => {
+  setItems((currentItems) => [...currentItems, newItem])
+}
+
   return (
     <div className="app">
       <header>
@@ -17,9 +26,12 @@ function App() {
 
         <section>
           <h2>Inventory</h2>
-          <p>0 items stored</p>
+          <p>{items.length} items stored</p>
 
-          <AddItemForm />
+          <AddItemForm onAddItem={handleAddItem} />
+
+          <InventoryList items={items} />
+          
         </section>
 
         <section>
