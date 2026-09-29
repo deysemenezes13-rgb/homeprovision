@@ -1,4 +1,5 @@
 import './App.css'
+import AddItemForm from './components/AddItemForm'
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
         <section>
           <h2>Inventory</h2>
           <p>0 items stored</p>
-          <button type="button">Add item</button>
+
+          <AddItemForm />
         </section>
 
         <section>
