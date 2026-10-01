@@ -96,6 +96,7 @@ button:hover {
 
 .attention-summary {
   display: flex;
+  align-items: center;
   gap: 12px;
   margin-top: 16px;
   flex-wrap: wrap;
@@ -103,6 +104,9 @@ button:hover {
 
 .attention-expired,
 .attention-soon {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
   padding: 7px 12px;
   border-radius: 20px;
   font-size: 13px;
@@ -117,4 +121,48 @@ button:hover {
 .attention-soon {
   background: #fff3d6;
   color: #8a5700;
+}
+
+.attention-list {
+  width: 100%;
+  margin-top: 20px;
+  display: grid;
+}
+
+.attention-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.attention-item > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.attention-item strong {
+  display: block;
+  font-size: 15px;
+}
+
+.attention-date {
+  display: block;
+  color: #667085;
+  font-size: 13px;
+}
+
+.attention-item > .status {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+@media (max-width: 600px) {
+  .attention-item {
+    align-items: center;
+  }
 }
