@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { InventoryItem } from '../types/InventoryItem'
+import './AddItemForm.css'
 
 interface AddItemFormProps {
     onAddItem: (item: InventoryItem) => void
@@ -31,57 +32,67 @@ function AddItemForm({ onAddItem }: AddItemFormProps) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Add New Item</h2>
+  <form className="add-item-form" onSubmit={handleSubmit}>
+    <h2>Add New Item</h2>
 
-            <label>
-                Item name
-                <input
-                    type="text"
-                    placeholder="e.g. Rice"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                />
-            </label>
+    <div className="form-grid">
+      <div className="form-field">
+        <label htmlFor="item-name">Item name</label>
+        <input
+          id="item-name"
+          type="text"
+          placeholder="e.g. Rice"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          required
+        />
+      </div>
 
-            <label>
-                Category
-                <select
-                    value={category}
-                    onChange={(event) => setCategory(event.target.value)}
-                >
-                    <option value="">Select category</option>
-                    <option value="food">Food</option>
-                    <option value="water">Water</option>
-                    <option value="medicine">Medicine</option>
-                    <option value="hygiene">Hygiene</option>
-                    <option value="power">Power & Batteries</option>
-                    <option value="other">Other</option>
-                </select>
-            </label>
+      <div className="form-field">
+        <label htmlFor="category">Category</label>
+        <select
+          id="category"
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+          required
+        >
+          <option value="">Select category</option>
+          <option value="food">Food</option>
+          <option value="water">Water</option>
+          <option value="medicine">Medicine</option>
+          <option value="hygiene">Hygiene</option>
+          <option value="power">Power & Batteries</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
 
-            <label>
-                Quantity
-                <input
-                    type="number"
-                    min="1"
-                    value={quantity}
-                    onChange={(event) => setQuantity(Number(event.target.value))}
-                />
-            </label>
+      <div className="form-field">
+        <label htmlFor="quantity">Quantity</label>
+        <input
+          id="quantity"
+          type="number"
+          min="1"
+          value={quantity}
+          onChange={(event) => setQuantity(Number(event.target.value))}
+          required
+        />
+      </div>
 
-            <label>
-                Expiration date
-                <input
-                    type="date"
-                    value={expirationDate}
-                    onChange={(event) => setExpirationDate(event.target.value)}
-                />
-            </label>
+      <div className="form-field">
+        <label htmlFor="expiration-date">Expiration date</label>
+        <input
+          id="expiration-date"
+          type="date"
+          value={expirationDate}
+          onChange={(event) => setExpirationDate(event.target.value)}
+          required
+        />
+      </div>
+    </div>
 
-            <button type="submit">Add to Inventory</button>
-        </form>
-    )
+    <button type="submit">Add to Inventory</button>
+  </form>
+)
 }
 
 export default AddItemForm

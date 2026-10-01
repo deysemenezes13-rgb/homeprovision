@@ -4,6 +4,7 @@ import AddItemForm from './components/AddItemForm'
 import type { InventoryItem } from './types/InventoryItem'
 import InventoryList from './components/InventoryList'
 
+
 function App() {
 
   const [items, setItems] = useState<InventoryItem[]>([])
