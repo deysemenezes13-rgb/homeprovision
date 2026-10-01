@@ -93,3 +93,28 @@ button:hover {
     padding: 20px;
   }
 }
+
+.attention-summary {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.attention-expired,
+.attention-soon {
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.attention-expired {
+  background: #fde8e7;
+  color: #a12b26;
+}
+
+.attention-soon {
+  background: #fff3d6;
+  color: #8a5700;
+}

@@ -1,4 +1,8 @@
 import type { InventoryItem } from '../types/InventoryItem'
+import {
+  getExpirationStatus,
+  formatExpirationDate,
+} from '../utils/expiration'
 import './InventoryList.css'
 
 interface InventoryListProps {
@@ -6,47 +10,6 @@ interface InventoryListProps {
 }
 
 function InventoryList({ items }: InventoryListProps) {
-  const getExpirationStatus = (expirationDate: string) => {
-    const today = new Date()
-    const expiration = new Date(`${expirationDate}T00:00:00`)
-
-    today.setHours(0, 0, 0, 0)
-
-    const differenceInMilliseconds =
-      expiration.getTime() - today.getTime()
-
-    const daysRemaining = Math.ceil(
-      differenceInMilliseconds / (1000 * 60 * 60 * 24)
-    )
-
-    if (daysRemaining < 0) {
-      return {
-        label: 'Expired',
-        className: 'expired',
-      }
-    }
-
-    if (daysRemaining <= 30) {
-      return {
-        label: 'Expiring Soon',
-        className: 'expiring-soon',
-      }
-    }
-
-    return {
-      label: 'Safe',
-      className: 'safe',
-    }
-  }
-
-  const formatDate = (date: string) => {
-    return new Date(`${date}T00:00:00`).toLocaleDateString('en-IE', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    })
-  }
-
   if (items.length === 0) {
     return <p>No items in your inventory yet.</p>
   }
@@ -64,14 +27,19 @@ function InventoryList({ items }: InventoryListProps) {
                 <span className="category">{item.category}</span>
               </div>
 
-              <span className={`status ${status.className}`}>
-                {status.label}
+              <span className={`status ${status}`}>
+                {status === 'safe' && 'Safe'}
+                {status === 'expiring-soon' && 'Expiring Soon'}
+                {status === 'expired' && 'Expired'}
               </span>
             </div>
 
             <div className="item-details">
               <span>Quantity: {item.quantity}</span>
-              <span>Expires: {formatDate(item.expirationDate)}</span>
+
+              <span>
+                Expires: {formatExpirationDate(item.expirationDate)}
+              </span>
             </div>
           </article>
         )

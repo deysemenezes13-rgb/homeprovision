@@ -3,14 +3,30 @@ import './App.css'
 import AddItemForm from './components/AddItemForm'
 import type { InventoryItem } from './types/InventoryItem'
 import InventoryList from './components/InventoryList'
+import { getExpirationStatus } from './utils/expiration'
 
 
 function App() {
 
   const [items, setItems] = useState<InventoryItem[]>([])
   const handleAddItem = (newItem: InventoryItem) => {
-  setItems((currentItems) => [...currentItems, newItem])
-}
+    setItems((currentItems) => [...currentItems, newItem])
+  }
+
+  const itemsNeedingAttention = items.filter((item) => {
+    const status = getExpirationStatus(item.expirationDate)
+
+    return status === 'expiring-soon' || status === 'expired'
+  })
+
+  const expiredItems = items.filter(
+  (item) => getExpirationStatus(item.expirationDate) === 'expired'
+)
+
+const expiringSoonItems = items.filter(
+  (item) => getExpirationStatus(item.expirationDate) === 'expiring-soon'
+)
+
 
   return (
     <div className="app">
@@ -32,12 +48,33 @@ function App() {
           <AddItemForm onAddItem={handleAddItem} />
 
           <InventoryList items={items} />
-          
+
         </section>
 
         <section>
-          <h2>Expiring Soon</h2>
-          <p>No items are close to expiration.</p>
+          <h2>Items Needing Attention</h2>
+
+          {itemsNeedingAttention.length === 0 ? (
+            <p>All your supplies are within their safe dates.</p>
+          ) : (
+            <p>
+              {itemsNeedingAttention.length}{' '}
+              {itemsNeedingAttention.length === 1 ? 'item needs' : 'items need'} attention.
+            </p>
+          )}
+          {itemsNeedingAttention.length > 0 && (
+            <div className="attention-summary">
+              <span className="attention-expired">
+                {expiredItems.length} Expired
+              </span>
+
+              <span className="attention-soon">
+                {expiringSoonItems.length} Expiring Soon
+              </span>
+            </div>
+          )}
+
+
         </section>
 
         <section>
