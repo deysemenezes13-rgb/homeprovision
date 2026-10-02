@@ -8,6 +8,10 @@ import {
   getDaysRemaining,
   formatExpirationDate,
 } from './utils/expiration'
+import { Link, Route, Routes } from 'react-router-dom'
+import Dashboard from './pages/Dashboard'
+import Inventory from './pages/Inventory'
+import Preparedness from './pages/Preparedness'
 
 function App() {
   const [items, setItems] = useState<InventoryItem[]>(() => {
@@ -65,130 +69,169 @@ function App() {
 
   return (
     <div className="app">
-      <header>
-        <h1>HomeProvision</h1>
-        <p>Your home supplies, organized and ready.</p>
+      <header className="app-header">
+        <div className="header-content">
+          <div>
+            <Link to="/" className="brand">
+              HomeProvision
+            </Link>
+
+            <p>Your home supplies, organized and ready.</p>
+          </div>
+
+          <nav className="main-nav">
+            <Link to="/">Dashboard</Link>
+            <Link to="/inventory">Inventory</Link>
+            <Link to="/preparedness">Preparedness</Link>
+          </nav>
+        </div>
       </header>
 
-      <main>
-        <section className="overview-section">
-          <div className="overview-heading">
-            <h2>Household Overview</h2>
-            <p>Everything you need to keep your household prepared.</p>
-          </div>
+      <Routes>
+        <Route
+          path="/"
+          element={
 
-          <div className="overview-grid">
-            <div className="overview-card">
-              <span className="overview-label">Total Items</span>
-              <strong>{items.length}</strong>
-              <span className="overview-description">
-                Supplies in your inventory
-              </span>
-            </div>
+            <main>
+              <section className="overview-section">
+                <div className="overview-heading">
+                  <h2>Household Overview</h2>
+                  <p>Everything you need to keep your household prepared.</p>
+                </div>
 
-            <div className="overview-card">
-              <span className="overview-label">Safe</span>
-              <strong>{safeItems.length}</strong>
-              <span className="overview-description">
-                Supplies within safe dates
-              </span>
-            </div>
+                <div className="overview-grid">
+                  <div className="overview-card">
+                    <span className="overview-label">Total Items</span>
+                    <strong>{items.length}</strong>
+                    <span className="overview-description">
+                      Supplies in your inventory
+                    </span>
+                  </div>
 
-            <div className="overview-card">
-              <span className="overview-label">Expiring Soon</span>
-              <strong>{expiringSoonItems.length}</strong>
-              <span className="overview-description">
-                Within the next 30 days
-              </span>
-            </div>
+                  <div className="overview-card">
+                    <span className="overview-label">Safe</span>
+                    <strong>{safeItems.length}</strong>
+                    <span className="overview-description">
+                      Supplies within safe dates
+                    </span>
+                  </div>
 
-            <div className="overview-card">
-              <span className="overview-label">Expired</span>
-              <strong>{expiredItems.length}</strong>
-              <span className="overview-description">
-                Supplies to replace
-              </span>
-            </div>
-          </div>
-        </section>
+                  <div className="overview-card">
+                    <span className="overview-label">Expiring Soon</span>
+                    <strong>{expiringSoonItems.length}</strong>
+                    <span className="overview-description">
+                      Within the next 30 days
+                    </span>
+                  </div>
 
-        <section>
-          <h2>Inventory</h2>
+                  <div className="overview-card">
+                    <span className="overview-label">Expired</span>
+                    <strong>{expiredItems.length}</strong>
+                    <span className="overview-description">
+                      Supplies to replace
+                    </span>
+                  </div>
+                </div>
+              </section>
 
-          <p>
-            {items.length} {items.length === 1 ? 'item' : 'items'} stored
-          </p>
+              <section>
+                <h2>Inventory</h2>
 
-          <AddItemForm onAddItem={handleAddItem} />
+                <p>
+                  {items.length} {items.length === 1 ? 'item' : 'items'} stored
+                </p>
 
-          <InventoryList
-            items={items}
-            onDeleteItem={handleDeleteItem}
-            onUpdateItem={handleUpdateItem}
-          />
+                <AddItemForm onAddItem={handleAddItem} />
 
-        </section>
+                <InventoryList
+                  items={items}
+                  onDeleteItem={handleDeleteItem}
+                  onUpdateItem={handleUpdateItem}
+                />
 
-        <section>
-          <h2>Items Needing Attention</h2>
+              </section>
 
-          {itemsNeedingAttention.length === 0 ? (
-            <p>All your supplies are within their safe dates.</p>
-          ) : (
-            <>
-              <p>
-                {itemsNeedingAttention.length}{' '}
-                {itemsNeedingAttention.length === 1
-                  ? 'item needs'
-                  : 'items need'}{' '}
-                attention.
-              </p>
+              <section>
+                <h2>Items Needing Attention</h2>
 
-              <div className="attention-summary">
-                <span className="attention-expired">
-                  {expiredItems.length} Expired
-                </span>
+                {itemsNeedingAttention.length === 0 ? (
+                  <p>All your supplies are within their safe dates.</p>
+                ) : (
+                  <>
+                    <p>
+                      {itemsNeedingAttention.length}{' '}
+                      {itemsNeedingAttention.length === 1
+                        ? 'item needs'
+                        : 'items need'}{' '}
+                      attention.
+                    </p>
 
-                <span className="attention-soon">
-                  {expiringSoonItems.length} Expiring Soon
-                </span>
-              </div>
+                    <div className="attention-summary">
+                      <span className="attention-expired">
+                        {expiredItems.length} Expired
+                      </span>
 
-              <div className="attention-list">
-                {itemsNeedingAttention.map((item) => {
-                  const status = getExpirationStatus(item.expirationDate)
-                  const daysRemaining = getDaysRemaining(item.expirationDate)
-
-                  return (
-                    <div className="attention-item" key={item.id}>
-                      <div>
-                        <strong>{item.name}</strong>
-
-                        <span className="attention-date">
-                          {formatExpirationDate(item.expirationDate)}
-                        </span>
-                      </div>
-
-                      <span className={`status ${status}`}>
-                        {status === 'expired'
-                          ? 'Expired'
-                          : daysRemaining === 0
-                            ? 'Expires today'
-                            : `${daysRemaining} days left`}
+                      <span className="attention-soon">
+                        {expiringSoonItems.length} Expiring Soon
                       </span>
                     </div>
-                  )
-                })}
-              </div>
-            </>
-          )}
-        </section>
 
-        <section>
-          <h2>Preparedness</h2>
-          <p>Start your household preparedness checklist.</p>
-        </section>
-      </main>
+                    <div className="attention-list">
+                      {itemsNeedingAttention.map((item) => {
+                        const status = getExpirationStatus(item.expirationDate)
+                        const daysRemaining = getDaysRemaining(item.expirationDate)
+
+                        return (
+                          <div className="attention-item" key={item.id}>
+                            <div>
+                              <strong>{item.name}</strong>
+
+                              <span className="attention-date">
+                                {formatExpirationDate(item.expirationDate)}
+                              </span>
+                            </div>
+
+                            <span className={`status ${status}`}>
+                              {status === 'expired'
+                                ? 'Expired'
+                                : daysRemaining === 0
+                                  ? 'Expires today'
+                                  : `${daysRemaining} days left`}
+                            </span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </>
+                )}
+              </section>
+
+              <section>
+                <h2>Preparedness</h2>
+                <p>Start your household preparedness checklist.</p>
+              </section>
+            </main>
+          }
+        />
+
+        <Route
+  path="/inventory"
+  element={
+    <Inventory
+      items={items}
+      onAddItem={handleAddItem}
+      onDeleteItem={handleDeleteItem}
+      onUpdateItem={handleUpdateItem}
+    />
+  }
+/>
+
+        <Route
+          path="/preparedness"
+          element={<Preparedness />}
+        />
+      </Routes>
+
     </div>
   )
 }
