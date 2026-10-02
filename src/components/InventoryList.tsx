@@ -7,9 +7,13 @@ import './InventoryList.css'
 
 interface InventoryListProps {
   items: InventoryItem[]
+  onDeleteItem: (id: string) => void
 }
 
-function InventoryList({ items }: InventoryListProps) {
+function InventoryList({
+  items,
+  onDeleteItem,
+}: InventoryListProps) {
   if (items.length === 0) {
     return <p>No items in your inventory yet.</p>
   }
@@ -40,6 +44,16 @@ function InventoryList({ items }: InventoryListProps) {
               <span>
                 Expires: {formatExpirationDate(item.expirationDate)}
               </span>
+            </div>
+
+            <div className="item-actions">
+              <button
+                type="button"
+                className="delete-button"
+                onClick={() => onDeleteItem(item.id)}
+              >
+                Delete
+              </button>
             </div>
           </article>
         )

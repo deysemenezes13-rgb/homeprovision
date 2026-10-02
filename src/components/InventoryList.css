@@ -65,3 +65,19 @@
     gap: 5px;
   }
 }
+.item-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.delete-button {
+  background: transparent;
+  color: #b42318;
+  border: 1px solid #fecdca;
+  padding: 7px 12px;
+}
+
+.delete-button:hover {
+  background: #fef3f2;
+}

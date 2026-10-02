@@ -33,6 +33,12 @@ useEffect(() => {
   const handleAddItem = (newItem: InventoryItem) => {
     setItems((currentItems) => [...currentItems, newItem])
   }
+  
+  const handleDeleteItem = (id: string) => {
+  setItems((currentItems) =>
+    currentItems.filter((item) => item.id !== id)
+  )
+}
 
   const itemsNeedingAttention = items.filter((item) => {
     const status = getExpirationStatus(item.expirationDate)
@@ -70,7 +76,10 @@ useEffect(() => {
 
           <AddItemForm onAddItem={handleAddItem} />
 
-          <InventoryList items={items} />
+          <InventoryList
+         items={items}
+         onDeleteItem={handleDeleteItem}
+          />
         </section>
 
         <section>
