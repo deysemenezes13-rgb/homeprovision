@@ -11,39 +11,39 @@ import {
 
 function App() {
   const [items, setItems] = useState<InventoryItem[]>(() => {
-  const savedItems = localStorage.getItem('homeprovision-items')
+    const savedItems = localStorage.getItem('homeprovision-items')
 
-  if (savedItems) {
-    return JSON.parse(savedItems)
-  }
+    if (savedItems) {
+      return JSON.parse(savedItems)
+    }
 
-  return []
-})
+    return []
+  })
 
-useEffect(() => {
-  localStorage.setItem(
-    'homeprovision-items',
-    JSON.stringify(items)
-  )
-}, [items])
+  useEffect(() => {
+    localStorage.setItem(
+      'homeprovision-items',
+      JSON.stringify(items)
+    )
+  }, [items])
 
   const handleAddItem = (newItem: InventoryItem) => {
     setItems((currentItems) => [...currentItems, newItem])
   }
-  
+
   const handleDeleteItem = (id: string) => {
-  setItems((currentItems) =>
-    currentItems.filter((item) => item.id !== id)
-  )
+    setItems((currentItems) =>
+      currentItems.filter((item) => item.id !== id)
+    )
   }
 
   const handleUpdateItem = (updatedItem: InventoryItem) => {
-  setItems((currentItems) =>
-    currentItems.map((item) =>
-      item.id === updatedItem.id ? updatedItem : item
+    setItems((currentItems) =>
+      currentItems.map((item) =>
+        item.id === updatedItem.id ? updatedItem : item
+      )
     )
-  )
-}
+  }
 
   const itemsNeedingAttention = items.filter((item) => {
     const status = getExpirationStatus(item.expirationDate)
@@ -59,6 +59,10 @@ useEffect(() => {
     (item) => getExpirationStatus(item.expirationDate) === 'expiring-soon'
   )
 
+  const safeItems = items.filter(
+    (item) => getExpirationStatus(item.expirationDate) === 'safe'
+  )
+
   return (
     <div className="app">
       <header>
@@ -67,9 +71,45 @@ useEffect(() => {
       </header>
 
       <main>
-        <section>
-          <h2>Household Overview</h2>
-          <p>Everything you need to keep your household prepared.</p>
+        <section className="overview-section">
+          <div className="overview-heading">
+            <h2>Household Overview</h2>
+            <p>Everything you need to keep your household prepared.</p>
+          </div>
+
+          <div className="overview-grid">
+            <div className="overview-card">
+              <span className="overview-label">Total Items</span>
+              <strong>{items.length}</strong>
+              <span className="overview-description">
+                Supplies in your inventory
+              </span>
+            </div>
+
+            <div className="overview-card">
+              <span className="overview-label">Safe</span>
+              <strong>{safeItems.length}</strong>
+              <span className="overview-description">
+                Supplies within safe dates
+              </span>
+            </div>
+
+            <div className="overview-card">
+              <span className="overview-label">Expiring Soon</span>
+              <strong>{expiringSoonItems.length}</strong>
+              <span className="overview-description">
+                Within the next 30 days
+              </span>
+            </div>
+
+            <div className="overview-card">
+              <span className="overview-label">Expired</span>
+              <strong>{expiredItems.length}</strong>
+              <span className="overview-description">
+                Supplies to replace
+              </span>
+            </div>
+          </div>
         </section>
 
         <section>
