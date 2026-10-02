@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-
 import AddItemForm from './components/AddItemForm'
 import InventoryList from './components/InventoryList'
-
 import type { InventoryItem } from './types/InventoryItem'
-
 import {
   getExpirationStatus,
   getDaysRemaining,
@@ -37,6 +34,14 @@ useEffect(() => {
   const handleDeleteItem = (id: string) => {
   setItems((currentItems) =>
     currentItems.filter((item) => item.id !== id)
+  )
+  }
+
+  const handleUpdateItem = (updatedItem: InventoryItem) => {
+  setItems((currentItems) =>
+    currentItems.map((item) =>
+      item.id === updatedItem.id ? updatedItem : item
+    )
   )
 }
 
@@ -77,9 +82,11 @@ useEffect(() => {
           <AddItemForm onAddItem={handleAddItem} />
 
           <InventoryList
-         items={items}
-         onDeleteItem={handleDeleteItem}
+            items={items}
+            onDeleteItem={handleDeleteItem}
+            onUpdateItem={handleUpdateItem}
           />
+
         </section>
 
         <section>

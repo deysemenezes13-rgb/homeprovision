@@ -65,19 +65,78 @@
     gap: 5px;
   }
 }
+
 .item-actions {
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
   margin-top: 14px;
 }
 
-.delete-button {
+.edit-button {
   background: transparent;
-  color: #b42318;
-  border: 1px solid #fecdca;
+  color: #315c47;
+  border: 1px solid #b7cec1;
   padding: 7px 12px;
 }
 
-.delete-button:hover {
-  background: #fef3f2;
+.edit-button:hover {
+  background: #eef5f1;
+}
+
+.edit-form {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1.5fr;
+  gap: 12px;
+  align-items: end;
+}
+
+.edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.edit-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475467;
+}
+
+.edit-field input,
+.edit-field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  background: white;
+  color: #1f2933;
+}
+
+.edit-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.cancel-button {
+  background: transparent;
+  color: #475467;
+  border: 1px solid #d0d5dd;
+}
+
+.cancel-button:hover {
+  background: #f2f4f7;
+}
+
+@media (max-width: 700px) {
+  .edit-form {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-actions {
+    grid-column: auto;
+  }
 }
