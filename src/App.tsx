@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 import AddItemForm from './components/AddItemForm'
@@ -13,7 +13,22 @@ import {
 } from './utils/expiration'
 
 function App() {
-  const [items, setItems] = useState<InventoryItem[]>([])
+  const [items, setItems] = useState<InventoryItem[]>(() => {
+  const savedItems = localStorage.getItem('homeprovision-items')
+
+  if (savedItems) {
+    return JSON.parse(savedItems)
+  }
+
+  return []
+})
+
+useEffect(() => {
+  localStorage.setItem(
+    'homeprovision-items',
+    JSON.stringify(items)
+  )
+}, [items])
 
   const handleAddItem = (newItem: InventoryItem) => {
     setItems((currentItems) => [...currentItems, newItem])
