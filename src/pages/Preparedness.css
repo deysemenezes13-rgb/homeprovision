@@ -1,0 +1,201 @@
+.preparedness-header {
+  margin-bottom: 28px;
+}
+
+.preparedness-header h1 {
+  margin-bottom: 6px;
+}
+
+.preparedness-header > p {
+  margin-top: 0;
+  color: #667085;
+}
+
+.preparedness-progress {
+  margin-top: 24px;
+  padding: 20px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.progress-info strong {
+  font-size: 18px;
+}
+
+.progress-info span {
+  color: #667085;
+  font-size: 14px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  overflow: hidden;
+  background: #e5e7eb;
+  border-radius: 20px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #315c47;
+  border-radius: 20px;
+  transition: width 0.3s ease;
+}
+
+.preparedness-categories {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.preparedness-category {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.preparedness-category h2 {
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+
+.checklist {
+  display: grid;
+  gap: 10px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border: 1px solid #eaecf0;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.checklist-item:hover {
+  background: #f9faf9;
+}
+
+.checklist-item input {
+  width: 17px;
+  height: 17px;
+  accent-color: #315c47;
+  cursor: pointer;
+}
+
+.checklist-item.completed {
+  background: #f2f7f4;
+  color: #667085;
+}
+
+.checklist-item.completed .checklist-item-title > span:first-child {
+  text-decoration: line-through;
+}
+
+@media (max-width: 700px) {
+  .preparedness-categories {
+    grid-template-columns: 1fr;
+  }
+
+  .progress-info {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.category-header h2 {
+  margin: 0 0 4px;
+}
+
+.category-header span {
+  color: #667085;
+  font-size: 12px;
+}
+
+.category-header strong {
+  color: #315c47;
+  font-size: 15px;
+}
+
+.category-progress-bar {
+  width: 100%;
+  height: 6px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  background: #e5e7eb;
+  border-radius: 20px;
+}
+
+.category-progress-fill {
+  height: 100%;
+  background: #315c47;
+  border-radius: 20px;
+  transition: width 0.3s ease;
+}
+.checklist-item {
+  align-items: flex-start;
+}
+
+.checklist-item input {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.checklist-item-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.checklist-item-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.essential-badge {
+  padding: 2px 7px;
+  border-radius: 12px;
+  background: #e7f4ec;
+  color: #315c47;
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.item-description {
+  color: #667085;
+  font-size: 12px;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.item-recommendation {
+  color: #475467;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+}
