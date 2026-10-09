@@ -5,6 +5,9 @@ import { Link, Route, Routes } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import Inventory from './pages/Inventory'
 import Preparedness from './pages/Preparedness'
+import { initialPreparednessItems } from './data/preparednessItems'
+import type { PreparednessItem } from './types/PreparednessItem'
+
 
 function App() {
   const [items, setItems] = useState<InventoryItem[]>(() => {
@@ -23,6 +26,32 @@ function App() {
       JSON.stringify(items)
     )
   }, [items])
+  const [preparednessItems, setPreparednessItems] = useState<PreparednessItem[]>(
+    () => {
+      const savedItems = localStorage.getItem('homeprovision-preparedness')
+
+      if (!savedItems) {
+        return initialPreparednessItems
+      }
+
+      try {
+        const parsedItems: PreparednessItem[] = JSON.parse(savedItems)
+
+        return initialPreparednessItems.map((initialItem) => {
+          const savedItem = parsedItems.find(
+            (item) => item.id === initialItem.id
+          )
+
+          return {
+            ...initialItem,
+            completed: savedItem?.completed ?? false,
+          }
+        })
+      } catch {
+        return initialPreparednessItems
+      }
+    }
+  )
 
   const handleAddItem = (newItem: InventoryItem) => {
     setItems((currentItems) => [...currentItems, newItem])
@@ -42,7 +71,24 @@ function App() {
     )
   }
 
-   return (
+  useEffect(() => {
+    localStorage.setItem(
+      'homeprovision-preparedness',
+      JSON.stringify(preparednessItems)
+    )
+  }, [preparednessItems])
+
+  const handleTogglePreparednessItem = (id: string) => {
+    setPreparednessItems((currentItems) =>
+      currentItems.map((item) =>
+        item.id === id
+          ? { ...item, completed: !item.completed }
+          : item
+      )
+    )
+  }
+
+  return (
     <div className="app">
       <header className="app-header">
         <div className="header-content">
@@ -65,7 +111,12 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<Dashboard items={items} />}
+          element={
+            <Dashboard
+              items={items}
+              preparednessItems={preparednessItems}
+            />
+          }
         />
 
         <Route
@@ -76,12 +127,17 @@ function App() {
               onAddItem={handleAddItem}
               onDeleteItem={handleDeleteItem}
               onUpdateItem={handleUpdateItem}
-    />
-  }
-/>
+            />
+          }
+        />
         <Route
           path="/preparedness"
-          element={<Preparedness />}
+          element={
+            <Preparedness
+              preparednessItems={preparednessItems}
+              onToggleItem={handleTogglePreparednessItem}
+            />
+          }
         />
       </Routes>
 

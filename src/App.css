@@ -287,3 +287,74 @@ button:hover {
     overflow-x: auto;
   }
 }
+
+.dashboard-preparedness-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.dashboard-preparedness-heading h2 {
+  margin-bottom: 6px;
+}
+
+.dashboard-preparedness-heading p {
+  margin: 0;
+}
+
+.dashboard-preparedness-percent {
+  color: #315c47;
+  font-size: 30px;
+}
+
+.dashboard-preparedness-bar {
+  width: 100%;
+  height: 10px;
+  margin-top: 24px;
+  background: #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.dashboard-preparedness-fill {
+  height: 100%;
+  background: #315c47;
+  border-radius: 20px;
+  transition: width 0.3s ease;
+}
+
+.dashboard-preparedness-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.dashboard-preparedness-footer span {
+  color: #667085;
+  font-size: 14px;
+}
+
+.preparedness-link {
+  color: #315c47;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.preparedness-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 500px) {
+  .dashboard-preparedness-heading {
+    align-items: flex-start;
+  }
+
+  .dashboard-preparedness-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

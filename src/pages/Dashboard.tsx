@@ -1,4 +1,7 @@
 import type { InventoryItem } from '../types/InventoryItem'
+import type { PreparednessItem } from '../types/PreparednessItem'
+import { Link } from 'react-router-dom'
+import { getPreparednessProgress } from '../utils/preparedness'
 
 import {
   getExpirationStatus,
@@ -8,9 +11,13 @@ import {
 
 interface DashboardProps {
   items: InventoryItem[]
+  preparednessItems: PreparednessItem[]
 }
 
-function Dashboard({ items }: DashboardProps) {
+function Dashboard({
+  items,
+  preparednessItems,
+}: DashboardProps) {
   const itemsNeedingAttention = items.filter((item) => {
     const status = getExpirationStatus(item.expirationDate)
 
@@ -28,6 +35,12 @@ function Dashboard({ items }: DashboardProps) {
   const safeItems = items.filter(
     (item) => getExpirationStatus(item.expirationDate) === 'safe'
   )
+
+  const {
+  totalItems,
+  completedItems,
+  progress,
+} = getPreparednessProgress(preparednessItems)
 
   return (
     <main>
@@ -127,10 +140,42 @@ function Dashboard({ items }: DashboardProps) {
         )}
       </section>
 
-      <section>
-        <h2>Preparedness</h2>
-        <p>Start your household preparedness checklist.</p>
-      </section>
+     <section className="dashboard-preparedness">
+  <div className="dashboard-preparedness-heading">
+    <div>
+      <h2>Household Preparedness</h2>
+      <p>Your household emergency readiness overview.</p>
+    </div>
+
+    <strong className="dashboard-preparedness-percent">
+      {progress}%
+    </strong>
+  </div>
+
+  <div
+    className="dashboard-preparedness-bar"
+    role="progressbar"
+    aria-label="Household preparedness progress"
+    aria-valuenow={progress}
+    aria-valuemin={0}
+    aria-valuemax={100}
+  >
+    <div
+      className="dashboard-preparedness-fill"
+      style={{ width: `${progress}%` }}
+    />
+  </div>
+
+  <div className="dashboard-preparedness-footer">
+    <span>
+      {completedItems} of {totalItems} items prepared
+    </span>
+
+    <Link to="/preparedness" className="preparedness-link">
+      View Checklist →
+    </Link>
+  </div>
+</section>
     </main>
   )
 }

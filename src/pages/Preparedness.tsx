@@ -1,64 +1,26 @@
-import { useEffect, useState } from 'react'
-import { initialPreparednessItems } from '../data/preparednessItems'
 import type { PreparednessItem } from '../types/PreparednessItem'
 import './Preparedness.css'
+import { getPreparednessProgress } from '../utils/preparedness'
 
-function Preparedness() {
-  const [preparednessItems, setPreparednessItems] = useState<
-    PreparednessItem[]
-  >(() => {
-    const savedItems = localStorage.getItem('homeprovision-preparedness')
+interface PreparednessProps {
+  preparednessItems: PreparednessItem[]
+  onToggleItem: (id: string) => void
+}
 
-    if (!savedItems) {
-      return initialPreparednessItems
-    }
-
-    const parsedItems: PreparednessItem[] = JSON.parse(savedItems)
-
-    return initialPreparednessItems.map((initialItem) => {
-      const savedItem = parsedItems.find(
-        (item) => item.id === initialItem.id
-      )
-
-      return {
-        ...initialItem,
-        completed: savedItem?.completed ?? false,
-      }
-    })
-  })
-
-  useEffect(() => {
-    localStorage.setItem(
-      'homeprovision-preparedness',
-      JSON.stringify(preparednessItems)
-    )
-  }, [preparednessItems])
-
-  const handleToggleItem = (id: string) => {
-    setPreparednessItems((currentItems) =>
-      currentItems.map((item) =>
-        item.id === id
-          ? { ...item, completed: !item.completed }
-          : item
-      )
-    )
-  }
+function Preparedness({
+  preparednessItems,
+  onToggleItem,
+}: PreparednessProps) {
 
   const categories = [
     ...new Set(preparednessItems.map((item) => item.category)),
   ]
 
-  const completedItems = preparednessItems.filter(
-    (item) => item.completed
-  ).length
-
-
-  const progress =
-    preparednessItems.length === 0
-      ? 0
-      : Math.round(
-        (completedItems / preparednessItems.length) * 100
-      )
+  const {
+  totalItems,
+  completedItems,
+  progress,
+} = getPreparednessProgress(preparednessItems)
 
   return (
     <main>
@@ -74,7 +36,7 @@ function Preparedness() {
             <strong>{progress}% Ready</strong>
 
             <span>
-              {completedItems} of {preparednessItems.length} items prepared
+              {completedItems} of {totalItems} items prepared
             </span>
           </div>
 
@@ -134,7 +96,7 @@ function Preparedness() {
                     <input
                       type="checkbox"
                       checked={item.completed}
-                      onChange={() => handleToggleItem(item.id)}
+                      onChange={() => onToggleItem(item.id)}
                     />
 
                     <div className="checklist-item-content">
