@@ -199,3 +199,41 @@
   font-weight: 600;
   text-decoration: none;
 }
+
+.checklist-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.checklist-filters button {
+  padding: 10px 16px;
+  border: 1px solid #d0d5dd;
+  border-radius: 10px;
+  background: white;
+  color: #475467;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.checklist-filters button:hover {
+  background: #f2f7f4;
+  opacity: 1;
+}
+
+.checklist-filters button.filter-active {
+  background: #315c47;
+  border-color: #315c47;
+  color: white;
+}
+
+.checklist-empty {
+  padding: 24px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  color: #667085;
+  text-align: center;
+}

@@ -1,6 +1,7 @@
 import type { PreparednessItem } from '../types/PreparednessItem'
 import './Preparedness.css'
 import { getPreparednessProgress } from '../utils/preparedness'
+import { useState } from 'react'
 
 interface PreparednessProps {
   preparednessItems: PreparednessItem[]
@@ -11,16 +12,39 @@ function Preparedness({
   preparednessItems,
   onToggleItem,
 }: PreparednessProps) {
+  type ChecklistFilter = 'all' | 'pending' | 'prepared'
+
+  const [filter, setFilter] = useState<ChecklistFilter>('all')
+
+  const filteredItems = preparednessItems.filter((item) => {
+    if (filter === 'pending') {
+      return !item.completed
+    }
+
+    if (filter === 'prepared') {
+      return item.completed
+    }
+
+    return true
+  })
+
+  const pendingItems = preparednessItems.filter(
+    (item) => !item.completed
+  ).length
+
+  const preparedItems = preparednessItems.filter(
+    (item) => item.completed
+  ).length
 
   const categories = [
-    ...new Set(preparednessItems.map((item) => item.category)),
+    ...new Set(filteredItems.map((item) => item.category)),
   ]
 
   const {
-  totalItems,
-  completedItems,
-  progress,
-} = getPreparednessProgress(preparednessItems)
+    totalItems,
+    completedItems,
+    progress,
+  } = getPreparednessProgress(preparednessItems)
 
   return (
     <main>
@@ -51,28 +75,65 @@ function Preparedness({
 
       <div className="preparedness-categories">
         {categories.map((category) => {
-          const categoryItems = preparednessItems.filter(
+          const categoryItems = filteredItems.filter(
             (item) => item.category === category
           )
-          const completedCategoryItems = categoryItems.filter(
+
+          const allCategoryItems = preparednessItems.filter(
+            (item) => item.category === category
+          )
+
+          const completedCategoryItems = allCategoryItems.filter(
             (item) => item.completed
           ).length
 
           const categoryProgress =
-            categoryItems.length === 0
+            allCategoryItems.length === 0
               ? 0
               : Math.round(
-                (completedCategoryItems / categoryItems.length) * 100
+                (completedCategoryItems / allCategoryItems.length) * 100
               )
+
 
           return (
             <section className="preparedness-category" key={category}>
+              <div className="checklist-filters">
+                <button
+                  type="button"
+                  className={filter === 'all' ? 'filter-active' : ''}
+                  onClick={() => setFilter('all')}
+                >
+                  All ({preparednessItems.length})
+                </button>
+
+                <button
+                  type="button"
+                  className={filter === 'pending' ? 'filter-active' : ''}
+                  onClick={() => setFilter('pending')}
+                >
+                  Pending ({pendingItems})
+                </button>
+
+                <button
+                  type="button"
+                  className={filter === 'prepared' ? 'filter-active' : ''}
+                  onClick={() => setFilter('prepared')}
+                >
+                  Prepared ({preparedItems})
+                </button>
+              </div>
+
+              {filteredItems.length === 0 && (
+                <p className="checklist-empty">
+                  No items match the selected filter.
+                </p>
+              )}
               <div className="category-header">
                 <div>
                   <h2>{category}</h2>
 
                   <span>
-                    {completedCategoryItems} of {categoryItems.length} prepared
+                    {completedCategoryItems} of {allCategoryItems.length} prepared
                   </span>
                 </div>
 
