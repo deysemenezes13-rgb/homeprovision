@@ -7,6 +7,8 @@ import Inventory from './pages/Inventory'
 import Preparedness from './pages/Preparedness'
 import { initialPreparednessItems } from './data/preparednessItems'
 import type { PreparednessItem } from './types/PreparednessItem'
+import NotificationCenter from './components/NotificationCenter'
+import { generateInventoryNotifications } from './utils/notifications'
 
 
 function App() {
@@ -88,6 +90,8 @@ function App() {
     )
   }
 
+  const notifications = generateInventoryNotifications(items)
+
   return (
     <div className="app">
       <header className="app-header">
@@ -100,11 +104,15 @@ function App() {
             <p>Your home supplies, organized and ready.</p>
           </div>
 
-          <nav className="main-nav">
-            <Link to="/">Dashboard</Link>
-            <Link to="/inventory">Inventory</Link>
-            <Link to="/preparedness">Preparedness</Link>
-          </nav>
+          <div className="header-actions">
+            <nav className="main-nav">
+              <Link to="/">Dashboard</Link>
+              <Link to="/inventory">Inventory</Link>
+              <Link to="/preparedness">Preparedness</Link>
+            </nav>
+
+            <NotificationCenter notifications={notifications} />
+          </div>
         </div>
       </header>
 
